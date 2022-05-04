@@ -7,7 +7,7 @@ const getContactsById = async (req, res) => {
   if (!result) {
     throw createError(404, `contact with id=${contactId} not found`);
   }
-  res.json({ status: 200, message: "success", data: result });
+  res.status(200).json({ status: 200, message: "success", data: result });
 };
 
 module.exports = getContactsById;

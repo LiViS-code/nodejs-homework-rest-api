@@ -9,7 +9,7 @@ const updateContact = async (req, res) => {
   if (!contact) {
     throw createError(404, `contact with id=${contactId} not found`);
   }
-  res.json({
+  res.status(200).json({
     status: "success",
     code: 200,
     data: {
