@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 const phoneRegExp = /^\(\d{3}\)\s\d{3}-\d{4}$/;
 
-const contactShema = Schema(
+const contactSchema = Schema(
   {
     name: {
       type: String,
@@ -48,10 +48,10 @@ const joiStatusSchema = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
-const Contact = model("contact", contactShema);
+const Contact = model("contact", contactSchema);
 
 module.exports = {
-  contactShema,
+  contactSchema,
   joiContactSchema,
   joiStatusSchema,
   Contact,

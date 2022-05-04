@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
+const bcrypt = require("bcryptjs");
 
-const userShema = Schema(
+const userSchema = Schema(
   {
     password: {
       type: String,
@@ -25,7 +26,15 @@ const userShema = Schema(
   { versionKey: false, timestamps: true }
 );
 
-const joiUserShema = Joi.object({
+userSchema.methods.setPassword = function (password) {
+  this.password = bcrypt.hashSync(password, 12);
+};
+
+userSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+const joiUserSchema = Joi.object({
   password: Joi.string().min(6).required(),
   email: Joi.string()
     .email({
@@ -37,9 +46,20 @@ const joiUserShema = Joi.object({
   token: Joi.string().default(null),
 });
 
-const User = model("user", userShema);
+const joiLoginSchema = Joi.object({
+  password: Joi.string().min(6).required(),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net"] },
+    })
+    .required(),
+});
+
+const User = model("user", userSchema);
 
 module.exports = {
   User,
-  joiUserShema,
+  joiUserSchema,
+  joiLoginSchema,
 };
