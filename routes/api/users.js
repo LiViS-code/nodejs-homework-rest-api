@@ -5,6 +5,8 @@ const { users: ctrl } = require("../../controllers");
 
 const router = express.Router();
 
-router.post("/", validation(joiUserShema), ctrlWrapper(ctrl.signup));
+router.post("/signup", validation(joiUserShema), ctrlWrapper(ctrl.signup));
+
+router.post("/login", validation(joiUserShema), ctrlWrapper(ctrl.login));
 
 module.exports = router;
