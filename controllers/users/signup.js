@@ -2,7 +2,7 @@ const { User } = require("../../models");
 const { createError } = require("../../helpers");
 
 const signup = async (req, res) => {
-  const { email } = req.body;
+  const { email, password, subscription } = req.body;
 
   const user = await User.findOne({ email });
 
@@ -13,9 +13,11 @@ const signup = async (req, res) => {
     );
   }
 
-  // TODO захешировать пароль перед сохранением.
+  const newUser = new User({ email, subscription });
 
-  const { subscription } = await User.create(req.body);
+  newUser.setPassword(password);
+
+  newUser.save();
 
   res.status(201).json({
     status: "success",
