@@ -2,7 +2,7 @@ const { User } = require("../../models");
 const { createError } = require("../../helpers");
 
 const signup = async (req, res) => {
-  const { email, password, subscription } = req.body;
+  const { email, password } = req.body;
 
   const user = await User.findOne({ email });
 
@@ -13,11 +13,11 @@ const signup = async (req, res) => {
     );
   }
 
-  const newUser = new User({ email, subscription });
+  const newUser = new User(req.body);
 
-  newUser.setPassword(password);
+  newUser.setPassword(password); // hashing the password
 
-  newUser.save();
+  const { subscription } = await newUser.save();
 
   res.status(201).json({
     status: "success",
@@ -25,7 +25,7 @@ const signup = async (req, res) => {
     data: {
       user: {
         email,
-        subscription: newUser.subscription,
+        subscription,
       },
     },
   });
