@@ -4,8 +4,9 @@ const { createError } = require("../../helpers");
 const updateStatusContact = async (req, res) => {
   const { contactId } = req.params;
   const { favorite } = req.body;
-  const contact = await Contact.findByIdAndUpdate(
-    contactId,
+  const { _id: owner } = req.user;
+  const contact = await Contact.findOneAndUpdate(
+    { _id: contactId, owner },
     { favorite },
     { new: true }
   );
@@ -16,7 +17,7 @@ const updateStatusContact = async (req, res) => {
     status: "success",
     code: 200,
     data: {
-      result: contact,
+      contact,
     },
   });
 };
