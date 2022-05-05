@@ -1,19 +1,25 @@
+const jwt = require("jsonwebtoken");
 const { User } = require("../../models");
 const { createError } = require("../../helpers");
 
+const { SECRET_KEY } = process.env;
+
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log("req.body", req.body);
+
   const user = await User.findOne({ email });
 
   if (!user || !user.comparePassword(password)) {
     throw createError(401, `Email or password is wrong`);
   }
 
-  // TODO выдать токен
-  user.token = "example token";
+  const payload = {
+    id: user._id,
+  };
 
-  user.save();
+  user.token = jwt.sign(payload, SECRET_KEY);
+
+  const { subscription } = await user.save();
 
   res.status(200).json({
     status: "success",
@@ -22,7 +28,7 @@ const login = async (req, res) => {
       token: user.token,
       user: {
         email,
-        subscription: user.subscription,
+        subscription,
       },
     },
   });
