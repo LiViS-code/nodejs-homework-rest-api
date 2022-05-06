@@ -1,6 +1,10 @@
 const express = require("express");
 const { ctrlWrapper, validation, auth } = require("../../middlewares");
-const { joiUserSchema, joiLoginSchema } = require("../../models");
+const {
+  joiUserSchema,
+  joiLoginSchema,
+  joiSubscriptionShema,
+} = require("../../models");
 const { users: ctrl } = require("../../controllers");
 
 const router = express.Router();
@@ -13,6 +17,11 @@ router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
 
 router.get("/logout", auth, ctrlWrapper(ctrl.logout));
 
-router.patch("/subscription", auth, ctrlWrapper(ctrl.updateSubscription));
+router.patch(
+  "/:userId/subscription",
+  auth,
+  validation(joiSubscriptionShema),
+  ctrlWrapper(ctrl.updateSubscription)
+);
 
 module.exports = router;

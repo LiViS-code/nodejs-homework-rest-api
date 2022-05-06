@@ -1,10 +1,10 @@
+const { Contact, joiContactSchema, joiStatusSchema } = require("./contact");
 const {
-  Contact,
-  joiContactSchema,
-  joiStatusSchema,
+  User,
+  joiUserSchema,
+  joiLoginSchema,
   joiSubscriptionShema,
-} = require("./contact");
-const { User, joiUserSchema, joiLoginSchema } = require("./user");
+} = require("./user");
 
 module.exports = {
   Contact,
