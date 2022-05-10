@@ -13,7 +13,7 @@ const signup = async (req, res) => {
   }
   const newUser = new User(req.body);
   newUser.setPassword(password); // hashing the password
-  const avatarURL = gravatar.url(email, { s: "50", r: "g" }, false);
+  const avatarURL = gravatar.url(email, { s: "250", r: "g" }, false);
   const { subscription } = await newUser.save();
   res.status(201).json({
     status: "success",
