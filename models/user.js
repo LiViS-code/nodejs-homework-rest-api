@@ -48,6 +48,7 @@ const joiUserSchema = Joi.object({
     .required(),
   subscription: Joi.valid("starter", "pro", "business").default("starter"),
   token: Joi.string().default(null),
+  avatarURL: Joi.string().default(""),
 });
 
 const joiLoginSchema = Joi.object({

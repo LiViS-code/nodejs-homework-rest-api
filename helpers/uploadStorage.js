@@ -1,7 +1,9 @@
 const path = require("path");
 const multer = require("multer");
+
 const uploadDir = path.join(process.cwd(), "tmp");
-const storeImage = path.join(process.cwd(), "avatars");
+const storeImage = path.join(process.cwd(), "public", "avatars");
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -13,9 +15,8 @@ const storage = multer.diskStorage({
     fileSize: 1048576,
   },
 });
-
 const upload = multer({
-  storage: storage,
+  storage,
 });
 
 module.exports = {
