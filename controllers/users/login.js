@@ -10,7 +10,7 @@ const login = async (req, res) => {
   if (!user || !user.comparePassword(password)) {
     throw createError(401, `Email or password is wrong`);
   }
-  let { _id: id, subscription, token } = user;
+  let { _id: id, subscription, token, avatarURL } = user;
   const payload = {
     id,
   };
@@ -24,6 +24,7 @@ const login = async (req, res) => {
       user: {
         email,
         subscription,
+        avatarURL,
       },
     },
   });

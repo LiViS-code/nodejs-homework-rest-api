@@ -3,10 +3,10 @@ const { ctrlWrapper, validation, auth } = require("../../middlewares");
 const {
   joiUserSchema,
   joiLoginSchema,
-  joiSubscriptionShema,
+  joiSubscriptionSchema,
 } = require("../../models");
 const { users: ctrl } = require("../../controllers");
-
+const { upload } = require("../../helpers");
 const router = express.Router();
 
 router.post("/signup", validation(joiUserSchema), ctrlWrapper(ctrl.signup));
@@ -20,8 +20,15 @@ router.get("/logout", auth, ctrlWrapper(ctrl.logout));
 router.patch(
   "/:userId/subscription",
   auth,
-  validation(joiSubscriptionShema),
+  validation(joiSubscriptionSchema),
   ctrlWrapper(ctrl.updateSubscription)
+);
+
+router.patch(
+  "/avatars",
+  auth,
+  upload.single("avatar"),
+  ctrlWrapper(ctrl.avatar)
 );
 
 module.exports = router;

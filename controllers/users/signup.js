@@ -1,5 +1,6 @@
 const { User } = require("../../models");
 const { createError } = require("../../helpers");
+const gravatar = require("gravatar");
 
 const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -12,6 +13,7 @@ const signup = async (req, res) => {
   }
   const newUser = new User(req.body);
   newUser.setPassword(password); // hashing the password
+  const avatarURL = gravatar.url(email, { s: "250", r: "g" }, false);
   const { subscription } = await newUser.save();
   res.status(201).json({
     status: "success",
@@ -20,6 +22,7 @@ const signup = async (req, res) => {
       user: {
         email,
         subscription,
+        avatarURL,
       },
     },
   });
