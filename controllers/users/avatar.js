@@ -2,7 +2,7 @@ const { createError, resizeAvatar } = require("../../helpers");
 const { User } = require("../../models");
 const path = require("path");
 const fs = require("fs/promises");
-const { storeImage } = require("../../helpers");
+const { storeImage } = require("../../middlewares");
 
 const avatar = async (req, res) => {
   const { _id } = req.user;
