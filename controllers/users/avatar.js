@@ -7,16 +7,14 @@ const { storeImage } = require("../../middlewares");
 const avatar = async (req, res) => {
   const { _id } = req.user;
   const { path: temporaryName, originalname } = req.file;
-  const avatarName = `${_id}_${originalname}`;
-  const fileName = path.join(storeImage, avatarName);
+  const [extension] = originalname.toLowerCase().split(".").reverse();
+  const avatarName = `${_id}_avatar.${extension}`;
+  const fileName = path.join(storeImage, avatarName); // full path to avatar
+  const avatarURL = path.join("avatars", avatarName); // save url from dir /avatars/
   try {
     await fs.rename(temporaryName, fileName);
-    const { avatarURL } = await User.findByIdAndUpdate(
-      { _id },
-      { avatarURL: fileName },
-      { new: true }
-    );
-    resizeAvatar(avatarURL);
+    await User.findByIdAndUpdate({ _id }, { avatarURL }, { new: true });
+    resizeAvatar(fileName);
     res.status(200).json({
       status: "success",
       code: 200,
