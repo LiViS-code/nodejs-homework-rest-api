@@ -1,5 +1,6 @@
+const { nanoid } = require("nanoid");
 const { User } = require("../../models");
-const { createError } = require("../../helpers");
+const { createError, sendMail } = require("../../helpers");
 const gravatar = require("gravatar");
 
 const signup = async (req, res) => {
@@ -11,10 +12,12 @@ const signup = async (req, res) => {
       `a user with e-mail address "${email}" is already registered`
     );
   }
-  const newUser = new User(req.body);
-  newUser.setPassword(password); // hashing the password
+  const verificationToken = nanoid();
   const avatarURL = gravatar.url(email, { s: "250", r: "g" }, false);
+  const newUser = new User({ ...req.body, avatarURL, verificationToken });
+  newUser.setPassword(password); // hashing the password
   const { subscription } = await newUser.save();
+  sendMail(newUser);
   res.status(201).json({
     status: "success",
     code: 201,
@@ -23,6 +26,7 @@ const signup = async (req, res) => {
         email,
         subscription,
         avatarURL,
+        verificationToken,
       },
     },
   });
