@@ -1,9 +1,9 @@
 const statusMessages = {
-  400: "Bad request",
+  400: "Bad Request",
   401: "Unauthorized",
-  404: "Not found",
+  404: "Not Found",
   409: "Conflict",
-  500: "Server error",
+  500: "Server Error",
 };
 
 const createError = (status, message) => {
